@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">control</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="found">Trouvé</string>
+    <string name="finger">Doigt</string>
+    <string name="left">Gauche</string>
+    <string name="bottom">Bas</string>
+
+</resources>
