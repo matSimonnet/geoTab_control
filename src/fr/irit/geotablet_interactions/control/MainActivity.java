@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
 
 	private MyMapView mapView;
 	private Map<View, Set<OsmNode>> selectedItems = new HashMap<View, Set<OsmNode>>(2);
-	private Map<View, Integer> isOutsideView = new HashMap<View, Integer>(2);
+	//private Map<View, Integer> isOutsideView = new HashMap<View, Integer>(2);
 	private float x = 0.0f, y = 0.0f;
 	private PrintWriter output;
 	private Date myDate;
