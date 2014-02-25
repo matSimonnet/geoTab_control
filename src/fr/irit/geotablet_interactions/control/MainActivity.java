@@ -29,7 +29,7 @@ import fr.irit.geotablet_interactions.common.MyTTS;
 import fr.irit.geotablet_interactions.common.OsmNode;
 
 public class MainActivity extends Activity {
-	private static final int TARGET_SIZE = 100; // Touch target size for on screen elements
+	private static final int TARGET_SIZE = 120; // Touch target size for on screen elements
 
 	private MyMapView mapView;
 	private Map<View, Set<OsmNode>> selectedItems = new HashMap<View, Set<OsmNode>>(2);
