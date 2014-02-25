@@ -5,11 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -25,12 +23,7 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import fr.irit.geotablet_interactions.common.MyMapView;
 import fr.irit.geotablet_interactions.common.MyTTS;
 import fr.irit.geotablet_interactions.common.OsmNode;
@@ -40,8 +33,6 @@ public class MainActivity extends Activity {
 
 	private MyMapView mapView;
 	private Map<View, Set<OsmNode>> selectedItems = new HashMap<View, Set<OsmNode>>(2);
-	//private Map<View, Integer> isOutsideView = new HashMap<View, Integer>(2);
-	private float x = 0.0f, y = 0.0f;
 	private PrintWriter output;
 	private Date myDate;
 	private boolean firstTouch = true;
@@ -85,7 +76,6 @@ public class MainActivity extends Activity {
 		getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 		
 		mapView = (MyMapView) findViewById(R.id.map_view);
-		final Set<OsmNode> nodes = mapView.getNodes();
 
 
 		// Set listener to the map view
@@ -176,46 +166,12 @@ public class MainActivity extends Activity {
 		selectedItems.put(v, selectedItem);
 	}
 
-	@SuppressWarnings("serial")
-	private void initializeAdapaterList(ArrayAdapter<Set<OsmNode>> adapter, int itemsCount) {
-		List<Set<OsmNode>> verticalNodesArray = new ArrayList<Set<OsmNode>>(itemsCount);
-		for (int i = 0; i < itemsCount; i++) {
-			verticalNodesArray.add(new HashSet<OsmNode>() {
-
-				@Override
-				public String toString() {
-					return formatListForTts(super.toString());
-				}
-
-			});
-		}
-		adapter.addAll(verticalNodesArray);
-	}
-
-	private String formatListForTts(String str) {
-		str = str.replace("[", "");
-		str = str.replace("]", "");
-		return str;
-	}
-
-	private void displayAdapter(ArrayAdapter<Set<OsmNode>> adapter, ViewGroup v, LayoutParams layoutParams) {
-		for (int i = 0; i < adapter.getCount(); i++) {
-			View adapterView = adapter.getView(i, null, null);
-			adapterView.setLayoutParams(layoutParams);
-			v.addView(adapterView);
-		}
-	}
-
-	//Mathieu's code's transformations to display all osmnode	
+	//display tactile and audio nodes	
 	private void onTouchMapView(View v, float x, float y) {
-		
-
-		
 		//retrieve all nodes
 		final Set<OsmNode> nodes = mapView.getNodes();
 		//retrieve selected node
 		Set<OsmNode> selectedNodes = new HashSet<OsmNode>();
-		
 				
 		for (OsmNode n : nodes) {
 			if ((n.toPoint(mapView).y <= y + TARGET_SIZE / 2)
@@ -275,46 +231,4 @@ public class MainActivity extends Activity {
 		output.println(str);
 		output.flush();
 	}
-		
-	
-	//Hélène's code to only display one osmnode
-//	private void onTouchMapView(View v, float x, float y) {
-//		Set<OsmNode> selectedNodes = new HashSet<OsmNode>();
-//		if ((v != null) && ((v.getId() == R.id.vertical_list_layout) || (v.getId() == R.id.horizontal_list_layout))) {
-//			selectedNodes = selectedItems.get(v);
-//		} else {
-//			for (Set<OsmNode> allSelectedNodes : selectedItems.values()) {
-//				if (allSelectedNodes != null) {
-//					selectedNodes.addAll(allSelectedNodes);
-//				}
-//			}
-//		}
-//		if (selectedNodes != null) {
-//			for (OsmNode n : selectedNodes) {
-//				if ((n.toPoint(mapView).y <= y + TARGET_SIZE / 2)
-//						&& (n.toPoint(mapView).y >= y - TARGET_SIZE / 2)
-//						&& (n.toPoint(mapView).x <= x + TARGET_SIZE / 2)
-//						&& (n.toPoint(mapView).x >= x - TARGET_SIZE / 2)) {
-//					if (!MyTTS.getInstance(this).isSpeaking()) {
-//						String from = "";
-//						if (v != null) {
-//							from = " " + getResources().getString(R.string.finger) + " ";
-//							if (v.getId() == R.id.vertical_list_layout) {
-//								from += getResources().getString(R.string.left);
-//							}
-//							if (v.getId() == R.id.horizontal_list_layout) {
-//								from += getResources().getString(R.string.bottom);
-//							}
-//						}
-//						((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(150);
-//						MyTTS.getInstance(this).speak(
-//								getResources().getString(R.string.found) + " " + n.getName() + from,
-//								TextToSpeech.QUEUE_ADD,
-//								null);
-//					}
-//				}
-//			}
-//		}
-//	}
-
 }
